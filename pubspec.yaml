@@ -45,6 +45,7 @@ dependencies:
   shared_preferences: ^0.5.3+4
   # Map
   flutter_map: ^0.14.0
+  flutter_bloc: ^0.21.0
 
 dev_dependencies:
   flutter_test:
