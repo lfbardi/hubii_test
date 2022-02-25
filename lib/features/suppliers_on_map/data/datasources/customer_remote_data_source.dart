@@ -23,8 +23,11 @@ class CustomerRemoteDataSourceImpl implements CustomerRemoteDataSource {
       Uri.parse('https://61f16556072f86001749f1b7.mockapi.io/api/v1/customers'),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)
-          .map((customer) => CustomerModel.fromJson(customer));
+      final customersJsonList = jsonDecode(response.body) as List;
+
+      return Future.value(customersJsonList
+          .map((customer) => CustomerModel.fromJson(customer))
+          .toList());
     } else {
       throw ServerException();
     }

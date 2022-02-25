@@ -23,8 +23,11 @@ class SupplierRemoteDataSourceImpl implements SupplierRemoteDataSource {
       Uri.parse('https://61f16556072f86001749f1b7.mockapi.io/api/v1/suppliers'),
     );
     if (response.statusCode == 200) {
-      return jsonDecode(response.body)
-          .map((supplier) => SupplierModel.fromJson(supplier));
+      final suppliersJsonList = jsonDecode(response.body) as List;
+
+      return Future.value(suppliersJsonList
+          .map((supplier) => SupplierModel.fromJson(supplier))
+          .toList());
     } else {
       throw ServerException();
     }

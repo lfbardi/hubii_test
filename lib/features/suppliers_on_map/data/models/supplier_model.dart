@@ -12,11 +12,16 @@ class SupplierModel extends Supplier {
   }) : super(id: id, address: address, name: name, range: range);
 
   factory SupplierModel.fromJson(Map<String, dynamic> json) {
+    if (json['address'] == null ||
+        json['id'] == null ||
+        json['id'] is! int ||
+        json['name'] == null ||
+        json['range'] == null) return null;
     return SupplierModel(
       id: json['id'],
       address: AddressModel.fromJson(json['address']),
-      name: json['name'],
-      range: json['range'],
+      name: json['name'] as String,
+      range: json['range'].toDouble(),
     );
   }
 
