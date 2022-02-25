@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hubii_test/core/usecases/usecase.dart';
 import 'package:hubii_test/features/suppliers_on_map/domain/usecases/get_all_customers.dart';
 import 'package:hubii_test/features/suppliers_on_map/domain/usecases/get_all_suppliers.dart';
@@ -14,10 +16,7 @@ class SuppliersOnMapBloc
   SuppliersOnMapBloc({
     @required this.getAllCustomers,
     @required this.getAllSuppliers,
-  });
-
-  @override
-  SuppliersOnMapState get initialState => InitialSuppliersOnMapState();
+  }) : super(InitialSuppliersOnMapState());
 
   @override
   Stream<SuppliersOnMapState> mapEventToState(
@@ -47,12 +46,61 @@ class SuppliersOnMapBloc
           yield FailureSuppliersOnMapState();
         },
         (suppliers) async* {
+          final filteredSuppliers =
+              suppliers.where((supplier) => supplier != null).toList();
+
+          final nearSuppliers = filteredSuppliers.where(
+            (sup) =>
+                Geolocator.distanceBetween(
+                      event.customer.address.lat,
+                      event.customer.address.long,
+                      sup.address.lat,
+                      sup.address.long,
+                    ) /
+                    1000 <=
+                sup.range,
+          );
+
+          final suppliersMarkers = nearSuppliers
+              .map(
+                (sup) => Marker(
+                  markerId: MarkerId(sup.id.toString()),
+                  position: LatLng(sup.address.lat, sup.address.long),
+                  infoWindow: InfoWindow(title: sup.name),
+                  icon: BitmapDescriptor.defaultMarkerWithHue(
+                    BitmapDescriptor.hueViolet,
+                  ),
+                ),
+              )
+              .toSet();
+
+          //adding customer marker
+          suppliersMarkers.add(
+            Marker(
+              markerId: MarkerId(
+                event.customer.id.toString(),
+              ),
+              position: LatLng(
+                event.customer.address.lat,
+                event.customer.address.long,
+              ),
+              infoWindow: InfoWindow(title: event.customer.name),
+              icon: BitmapDescriptor.defaultMarkerWithHue(
+                BitmapDescriptor.hueBlue,
+              ),
+            ),
+          );
+
           yield SuccessSuppliersOnMapState(
             customer: event.customer,
-            suppliers: suppliers,
+            suppliers: filteredSuppliers,
+            markers: suppliersMarkers,
           );
         },
       );
+    } else if (event is ResetAppEvent) {
+      yield LoadingSuppliersOnMapState();
+      yield InitialSuppliersOnMapState();
     }
   }
 }

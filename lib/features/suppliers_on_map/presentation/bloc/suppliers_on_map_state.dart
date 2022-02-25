@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hubii_test/features/suppliers_on_map/domain/entities/customer.dart';
 import 'package:hubii_test/features/suppliers_on_map/domain/entities/supplier.dart';
 import 'package:meta/meta.dart';
@@ -22,12 +23,14 @@ class SuccessLoadingCustomersSuppliersOnMapState extends SuppliersOnMapState {
 
 class SuccessSuppliersOnMapState extends SuppliersOnMapState {
   final List<Supplier> suppliers;
+  final Set<Marker> markers;
   final Customer customer;
 
   SuccessSuppliersOnMapState({
     @required this.suppliers,
     @required this.customer,
-  }) : super([suppliers, customer]);
+    @required this.markers,
+  }) : super([suppliers, customer, markers]);
 }
 
 class FailureSuppliersOnMapState extends SuppliersOnMapState {}

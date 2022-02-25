@@ -14,3 +14,5 @@ class FindAllNearSuppliersEvent extends SuppliersOnMapEvent {
 
   FindAllNearSuppliersEvent({@required this.customer}) : super([customer]);
 }
+
+class ResetAppEvent extends SuppliersOnMapEvent {}
