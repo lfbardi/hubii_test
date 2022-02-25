@@ -1,0 +1,14 @@
+{
+    "id": 1,
+    "name": "name",
+    "address": {
+      "street": "street",
+      "state": "state",
+      "city": "city",
+      "country": "country",
+      "number": "123",
+      "neighborhood": "downtown",
+      "lat": 1.0,
+      "long": -1.0
+    }
+}

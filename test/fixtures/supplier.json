@@ -1,0 +1,15 @@
+{
+    "id": 1,
+    "name": "name",
+    "range": 3.5,
+    "address": {
+      "street": "street",
+      "number": "number",
+      "neighborhood": "downtown",
+      "city": "city",
+      "state": "state",
+      "country": "country",
+      "lat": 1,
+      "long": -1
+    }
+}
