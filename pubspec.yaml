@@ -39,10 +39,7 @@ dependencies:
   # Functional programming thingies
   dartz: ^0.8.6
   # Remote API
-  data_connection_checker: ^0.3.4
   http: ^0.13.3
-  # Local cache
-  shared_preferences: ^0.5.3+4
   # Map
   google_maps_flutter: ^2.1.1
   flutter_bloc: ^5.0.0
